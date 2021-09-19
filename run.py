@@ -136,6 +136,6 @@ def test(epoch, test_loader):
 start_epoch = 0
 num_epoch = 1
 for epoch in range(start_epoch, start_epoch + num_epoch):
-    # train(epoch, train_loader)
+    train(epoch, train_loader)
     test_dice = test(epoch, test_loader)
     scheduler.step(test_dice)
