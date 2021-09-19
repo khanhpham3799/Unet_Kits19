@@ -5,13 +5,6 @@ from starter_code.utils import load_case
 from starter_code.visualize import visualize, hu_to_grayscale
 from pathlib import Path
 import nibabel as nib
-import numpy as np
-import scipy
-import skimage
-from scipy import ndimage
-from skimage.transform import resize
-import imageio
-from imageio import imwrite
 import os
 import cv2
 
