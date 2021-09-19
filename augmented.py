@@ -1,12 +1,10 @@
 # !git clone https://github.com/neheller/kits19
 # %cd /kits19
-import starter_code
-from starter_code.utils import load_case
-from starter_code.visualize import visualize, hu_to_grayscale
 from pathlib import Path
 import nibabel as nib
 import os
 import cv2
+import torch
 
 data = '/kits19/data/'
 output = '/kits19/output/'
@@ -55,3 +53,32 @@ for i in list_case:
         torch.save(new_img,str(ipath))
         torch.save(new_seg,str(spath))
     print(output_case)
+
+#load data and divide training, testing set
+def load_dataset(data_link, data_type, display = False):
+  list_case = sorted(os.listdir(data_link))
+  data_path = Path(data_link)
+  initial_data = torch.zeros(1,204,204)
+  for i in list_case:
+    link = str(data_link + i + '/' + data_type)
+    data_load = torch.load(link)
+    initial_data = torch.cat((initial_data,data_load), dim=0)
+    if (display):
+      print(i,initial_data.shape)
+  initial_data = initial_data[1:,:,:]
+  return initial_data
+
+data = '/kits19/output/'
+img_dataset = load_dataset(data,data_type = 'imaging', display=True)
+seg_dataset = load_dataset(data,data_type = 'segmentation', display=False)
+
+
+def save_checkpoint(dataset, filename):
+  print("=> Saving checkpoint")
+  torch.save(dataset, filename)
+img_savelink = "/kits19/img_dataset.pth"
+seg_savelink = "/kits19/seg_dataset.pth"
+save_checkpoint(img_dataset,img_savelink)
+save_checkpoint(seg_dataset,seg_savelink)
+print("imaging set:",img_savelink)
+print("segmentation set:",img_savelink)
