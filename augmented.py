@@ -23,6 +23,8 @@ def change_type(img):
     return img
 
 for i in list_case:
+    if i == "case_00210":
+        break
     output_case = Path(output + i)
     link_data = Path(data + i)
     if output_case.exists():
