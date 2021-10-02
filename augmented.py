@@ -1,5 +1,3 @@
-# !git clone https://github.com/neheller/kits19
-# %cd /kits19
 from pathlib import Path
 import nibabel as nib
 import os
