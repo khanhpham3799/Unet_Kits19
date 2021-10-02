@@ -20,7 +20,7 @@ def crop_resize_img(img):
     return new_image
 
 def change_type(img):
-    if img.dtype == 'unit16':
+    if img.dtype == 'uint16':
         img = img.astype('float64')
     return img
 
