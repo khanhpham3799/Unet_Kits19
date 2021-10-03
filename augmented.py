@@ -73,8 +73,8 @@ def load_dataset(data_link, display = False):
         print(data.shape)
   return data
 
-img_link = "/kits19/output/imaging/"
-seg_link = "/kits19/output/segmentation/"
+img_link = output + "imaging/"
+seg_link = output + "segmentation/"
 img_dataset = load_dataset(img_link, display=True)
 seg_dataset = load_dataset(seg_link, display=False)
 
@@ -82,8 +82,8 @@ seg_dataset = load_dataset(seg_link, display=False)
 def save_checkpoint(dataset, filename):
   print("=> Saving checkpoint")
   torch.save(dataset, filename)
-img_savelink = "/kits19/img_dataset.pth"
-seg_savelink = "/kits19/seg_dataset.pth"
+img_savelink = output + "img_dataset.pth"
+seg_savelink = output + "seg_dataset.pth"
 save_checkpoint(img_dataset,img_savelink)
 save_checkpoint(seg_dataset,seg_savelink)
 print("imaging set:",img_savelink)
