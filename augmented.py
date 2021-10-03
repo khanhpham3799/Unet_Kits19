@@ -63,22 +63,20 @@ for i in list_case:
     print(ipath)
 
 #load data and divide training, testing set
-def load_dataset(data_link, data_type, display = False):
+def load_dataset(data_link, display = False):
   list_case = sorted(os.listdir(data_link))
-  data_path = Path(data_link)
-  initial_data = torch.zeros(1,204,204)
-  for i in list_case:
-    link = str(data_link + i + '/' + data_type)
-    data_load = torch.load(link)
-    initial_data = torch.cat((initial_data,data_load), dim=0)
+  data = torch.load(data_link+list_case[0])
+  for i in list_case[1:]:
+    new = torch.load(data_link + i)
+    data = torch.cat((data,new), dim=0)
     if (display):
-      print(i,initial_data.shape)
-  initial_data = initial_data[1:,:,:]
-  return initial_data
+        print(data.shape)
+  return data
 
-data = '/kits19/output/'
-img_dataset = load_dataset(data,data_type = 'imaging', display=True)
-seg_dataset = load_dataset(data,data_type = 'segmentation', display=False)
+img_link = "/kits19/output/imaging/"
+seg_link = "/kits19/output/segmentation/"
+img_dataset = load_dataset(img_link, display=True)
+seg_dataset = load_dataset(seg_link, display=False)
 
 
 def save_checkpoint(dataset, filename):
