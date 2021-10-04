@@ -4,8 +4,8 @@ import os
 import cv2
 import torch
 
-data = '/kits19/data/'
-output = '/kits19/output/'
+data = '/home/titan/kits19/data/'
+output = '/home/titan/Unet_Kits19/output/'
 output_path = Path(output)
 if not output_path.exists():
     output_path.mkdir()
@@ -31,14 +31,14 @@ for i in list_case:
     if i == "case_00210":
         break
     link_data = Path(data + i)
-    img_link = Path(output + "imaging")
-    seg_link = Path(output + "segmentation")
+    img_link = Path(output + "imaging/")
+    seg_link = Path(output + "segmentation/")
     if not img_link.exists():
         img_link.mkdir()
     if not seg_link.exists():
         seg_link.mkdir()
-    ipath = str(img_link)+ "/" + i + ".pth"
-    spath = str(seg_link)+ "/" + i + ".pth"
+    ipath = str(img_link) + i + ".pth"
+    spath = str(seg_link) + i + ".pth"
     if Path(ipath).exists():
         continue
     vol_nii = nib.load(str(link_data / 'imaging.nii.gz'))
