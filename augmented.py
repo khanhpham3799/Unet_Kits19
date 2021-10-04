@@ -17,7 +17,7 @@ def crop_resize_img(img):
     row = img.shape[0]
     col = img.shape[1]
     new_img = img[int(row / 10):int(row * 9 / 10), int(col / 10):int(col * 9 / 10)]
-    new_image = cv2.resize(new_img, (int(new_img.shape[0] / 2), int(new_img.shape[1] / 2)))
+    new_image = cv2.resize(new_img, (204, 204))
     return new_image
 
 def change_type(img):
@@ -31,15 +31,15 @@ for i in list_case:
     if i == "case_00210":
         break
     link_data = Path(data + i)
-    img_link = Path(output + "imaging/")
-    seg_link = Path(output + "segmentation/")
+    img_link = Path(output + "imaging")
+    seg_link = Path(output + "segmentation")
     if not img_link.exists():
         img_link.mkdir()
     if not seg_link.exists():
         seg_link.mkdir()
-    ipath = str(img_link) + i + ".pth"
-    spath = str(seg_link) + i + ".pth"
-    if Path(ipath).exists():
+    ipath = str(img_link) + "/" + i + ".pth"
+    spath = str(seg_link) + "/" + i + ".pth"
+    if Path(ipath).exists() and Path(spath).exits():
         continue
     vol_nii = nib.load(str(link_data / 'imaging.nii.gz'))
     vol_nii = vol_nii.get_data()
