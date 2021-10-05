@@ -37,9 +37,9 @@ for i in list_case:
         img_link.mkdir()
     if not seg_link.exists():
         seg_link.mkdir()
-    ipath = str(img_link) + "/" + i + ".pth"
-    spath = str(seg_link) + "/" + i + ".pth"
-    if Path(ipath).exists() and Path(spath).exits():
+    ipath = Path(str(img_link) + "/" + i + ".pth")
+    spath = Path(str(seg_link) + "/" + i + ".pth")
+    if ipath.exists() and spath.exists():
         continue
     vol_nii = nib.load(str(link_data / 'imaging.nii.gz'))
     vol_nii = vol_nii.get_data()
