@@ -1,9 +1,9 @@
 import nibabel as nib
 import os
 import numpy as np
-data_link = ""
-train_link = ""
-test_link = ""
+data_link = "/media/khanhpham/새 볼륨/kits19/data/"
+train_link = "/home/khanhpham/Unet_Kits19/output/train/"
+test_link = "/home/khanhpham/Unet_Kits19/output/test/"
 list_case = sorted(os.listdir(data_link))
 split_ratio = 0.2
 patient = 0
