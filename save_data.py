@@ -13,8 +13,8 @@ for case in list_case:
     seg = nib.load(str(case/'segmentation.nii.gz'))
     seg = seg.get_data()
     data_len = img.shape[0]
-    img = np.reshape(img, (len,1,512,512))
-    seg = np.reshape(seg, (len,1,512,512))
+    img = np.reshape(img, (data_len,1,512,512))
+    seg = np.reshape(seg, (data_len,1,512,512))
     print(img.shape)
     for i in range(0,data_len):
         np_data = np.stack((img[i],seg[i]),axis = 0)
