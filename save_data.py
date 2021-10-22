@@ -23,10 +23,11 @@ for case in list_case:
     seg = np.reshape(seg, (data_len,1,512,512))
     print(img.shape)
     for i in range(0,data_len):
-        np_data = np.stack((img[i],seg[i]),axis = 0)
+        np_data = np.stack((img[i],seg[i]),axis = 0) #2,1,512,512
         if random.random() < 0.2:
             np.save(test_link+str(patient)+"_"+str(i),np_data)
         else:
             np.save(train_link+str(patient)+"_"+str(i),np_data)
+
     print(case)        
     patient+=1
