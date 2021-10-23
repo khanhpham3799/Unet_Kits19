@@ -3,8 +3,8 @@ import os
 import numpy as np
 import random
 data_link = "/media/khanhpham/새 볼륨/kits19/data/"
-train_link = "/home/khanhpham/Unet_Kits19/output/train/"
-test_link = "/home/khanhpham/Unet_Kits19/output/test/"
+train_link = "/media/khanhpham/새 볼륨/unet_kits19_data/train/"
+test_link = "/media/khanhpham/새 볼륨/unet_kits19_data/test/"
 list_case = sorted(os.listdir(data_link))
 split_ratio = 0.2
 patient = 0
