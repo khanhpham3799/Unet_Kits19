@@ -1,3 +1,8 @@
+import torch
+import torch.nn as nn
+import torchvision.transforms.functional as F
+from torchsummary import summary
+
 #build in Unet model
 class conv_block(nn.Module):
     def __init__(self, in_c, out_c):
@@ -54,7 +59,7 @@ class decoder_block(nn.Module):
 
         return x
 
-class build_unet(nn.Module):
+class UNET(nn.Module):
     def __init__(self, in_c, out_c):
         super().__init__()
 
@@ -96,3 +101,10 @@ class build_unet(nn.Module):
         outputs = self.outputs(d4)
 
         return outputs
+def test():
+    model = UNET(in_c=1,out_c=3)
+    model.to(device = "cuda:0")
+    summary(model,(1,512,512))
+
+if __name__ == "__main__":
+    test()

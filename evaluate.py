@@ -1,42 +1,37 @@
-#calculate dice_coeff and dice loss function
-def dice_coeff(input, target, reduce_batch_first = False, epsilon=1e-6):
-    # Average of Dice coefficient for all batches, or for a single mask
-    assert input.size() == target.size()
-    #with single img: dim = 2
-    if input.dim() == 2 and reduce_batch_first:
-        raise ValueError(f'Dice: asked to reduce batch but got tensor without batch dimension (shape {input.shape})')
+import torch
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+from torchvision import transforms
+from Unet_model import build_unet
+import torch.nn.functional as F
 
-    if input.dim() == 2 or reduce_batch_first:
-        #torch,view(-1) convert to 1D array
-        #torch.dot() compute the sum of element-wise of 2 tensor
-        inter = torch.dot(input.reshape(-1), target.reshape(-1))
-        sets_sum = torch.sum(input) + torch.sum(target)
-        #if sum = 0
-        if sets_sum.item() == 0:
-            sets_sum = 2 * inter
+batch_size = 64
+model_path = "/media/khanhpham/새 볼륨/unet_kits19_data/checkpoint.pth"
+if torch.cuda.is_available():
+    device = 'cuda:0'
+    print('Running on the GPU')
+else:
+    device = 'cpu'
+    print('Running on the CPU')
 
-        return (2 * inter + epsilon) / (sets_sum + epsilon)
-    #with set of img (dim=3), get each of the img in set
-    else:
-        # compute and average metric for each batch element
-        dice = 0
-        for i in range(input.shape[0]):
-            dice += dice_coeff(input[i, ...], target[i, ...])
-        return dice / input.shape[0]
-
-
-def multiclass_dice_coeff(input: Tensor, target: Tensor, reduce_batch_first: bool = False, epsilon=1e-6):
-    # Average of Dice coefficient for all classes
-    assert input.size() == target.size()
-    dice = 0
-    for channel in range(input.shape[1]):
-        dice += dice_coeff(input[:, channel, ...], target[:, channel, ...], reduce_batch_first, epsilon)
-
-    return dice / input.shape[1]
-
-
-def dice_loss(input: Tensor, target: Tensor, multiclass: bool = False):
-    # Dice loss (objective to minimize) between 0 and 1
-    assert input.size() == target.size()
-    fn = multiclass_dice_coeff if multiclass else dice_coeff
-    return 1 - fn(input, target, reduce_batch_first=True)
+def test(data, model):    
+    with torch.no_grad():
+        for batch_idx, (image,mask)in enumerate(tqdm(data)):
+            img = image.to(device)
+            mask = mask.to(device)
+            predictions = model(img) 
+            predictions = F.softmax(predictions, dim=1)
+            pred_labels = torch.argmax(predictions, dim=1) 
+            pred_labels = pred_labels.float()
+def main():
+    test_loader = get_loaders(
+        get_dir = "/media/khanhpham/새 볼륨/unet_kits19_data/test/",
+        batch_size = batch_size,
+        img_transform = None,
+        data_shuffle=False,
+    )
+    model = buld_unet(in_c=in_channel,out_c=out_channel)
+    checkpoint = torch.load(model_path)
+    model.load_state_dict(checkpoint["model"])
+    model.eval()
+    
