@@ -16,7 +16,7 @@ Run mean_std_get.py to get mean and standard variation values for normalization 
 Run train.py to train model
 
 ## Step 3
-Run test.py for viewing result 
+Run test.py for viewing result  (tensorboard --logdir=runs)
 
 Training set
 
