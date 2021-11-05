@@ -4,6 +4,10 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, datasets
 import torch.nn as nn
+model_path = "/media/khanhpham/새 볼륨/unet_kits19_data/mean_std_get.pth"
+get = torch.load(model_path)
+mean = get["mean"]
+std = get["std"]
 class kits19_dataset(Dataset):
     def __init__(self,img_dir,transform=None):
         self.dir = img_dir
@@ -22,7 +26,9 @@ class kits19_dataset(Dataset):
         mask = mask[0].astype(np.float32)
         if self.transform is not None:
             image = self.transform(image)
-            mask = self.transform(mask)
+            image = transforms.functional.normalize(image, mean, std)
+            image = (image-torch.min(image))/(torch.max(image)-torch.min(image))
+            mask = self.transform(mask)    
         mask = mask.type(torch.LongTensor)
         return image, mask
 def test():

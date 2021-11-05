@@ -6,26 +6,17 @@ from torchsummary import summary
 #build in Unet model
 class conv_block(nn.Module):
     def __init__(self, in_c, out_c):
-        super().__init__()
-
-        self.conv1 = nn.Conv2d(in_c, out_c, kernel_size=3, padding=1)
-        self.bn1 = nn.BatchNorm2d(out_c)
-
-        self.conv2 = nn.Conv2d(out_c, out_c, kernel_size=3, padding=1)
-        self.bn2 = nn.BatchNorm2d(out_c)
-
-        self.relu = nn.ReLU()
-
-    def forward(self, inputs):
-        x = self.conv1(inputs)
-        x = self.bn1(x)
-        x = self.relu(x)
-
-        x = self.conv2(x)
-        x = self.bn2(x)
-        x = self.relu(x)
-
-        return x
+        super(conv_block, self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(in_c, out_c, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(out_c),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(out_c, out_c, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(out_c),
+            nn.ReLU(inplace=True),
+        )
+    def forward(self, x):
+        return self.conv(x)
 
 class encoder_block(nn.Module):
     def __init__(self, in_c, out_c):
@@ -54,7 +45,7 @@ class decoder_block(nn.Module):
         #increase dimension of x1 by add number of row, col [left_x,right_x,top_y,bottom_y]
         x = F.pad(x, [diffX // 2, diffX - diffX // 2,
                         diffY // 2, diffY - diffY // 2])
-        x = torch.cat([x, skip], axis=1)
+        x = torch.cat([x, skip], dim=1)
         x = self.conv(x)
 
         return x
@@ -92,13 +83,13 @@ class UNET(nn.Module):
         b = self.b(p4)
 
         """ Decoder """
-        d1 = self.d1(b, s4)
-        d2 = self.d2(d1, s3)
-        d3 = self.d3(d2, s2)
-        d4 = self.d4(d3, s1)
+        a1 = self.d1(b, s4)
+        a2 = self.d2(a1, s3)
+        a3 = self.d3(a2, s2)
+        a4 = self.d4(a3, s1)
 
         """ Classifier """
-        outputs = self.outputs(d4)
+        outputs = self.outputs(a4)
 
         return outputs
 def test():
