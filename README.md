@@ -12,6 +12,7 @@ python3 -m starter_code.get_imaging
 Run save_data.py to load and save data in training and testing set
 
 ## Step 2
+Run mean_std_get.py to get mean and standard variation values for normalization step.
 Run train.py to train model
 
 ## Step 3
