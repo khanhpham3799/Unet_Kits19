@@ -18,6 +18,9 @@ Run train.py to train model
 Run test.py for viewing result 
 
 Training set
+
 ![alt text](https://user-images.githubusercontent.com/64471569/140443598-ec0f5b66-0c8e-4d72-9cad-84587adb35f8.png)
 
 Result of segmentation
+
+![alt text](https://user-images.githubusercontent.com/64471569/140443924-00f301fc-6bf5-488f-bac4-3014bc72e3c2.png)
